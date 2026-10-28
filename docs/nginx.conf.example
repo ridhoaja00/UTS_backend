@@ -1,0 +1,19 @@
+# Pasang sertifikat HTTPS terlebih dahulu; sesuaikan domain dan path sertifikat.
+server {
+    listen 443 ssl;
+    server_name kosanda.example;
+    ssl_certificate /path/to/fullchain.pem;
+    ssl_certificate_key /path/to/privkey.pem;
+    client_max_body_size 6m;
+    location / {
+        proxy_pass http://127.0.0.1:3001;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+server {
+    listen 80;
+    server_name kosanda.example;
+    return 301 https://$host$request_uri;
+}

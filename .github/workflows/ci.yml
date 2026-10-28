@@ -1,0 +1,42 @@
+name: Validate SmartKos
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: smartkos_ci_test
+          MYSQL_USER: smartkos
+          MYSQL_PASSWORD: ci-database-password
+          MYSQL_ROOT_PASSWORD: ci-root-password
+        ports: ["3306:3306"]
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 --silent"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+    env:
+      NODE_ENV: test
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_USER: smartkos
+      DB_PASSWORD: ci-database-password
+      DB_NAME: smartkos_ci_test
+      ADMIN_EMAIL: admin@example.test
+      ADMIN_PASSWORD: CiAdminPassword!2026
+      APP_ORIGIN: http://localhost:5173
+      BANK_NAME: DEMO BANK - DO NOT TRANSFER
+      BANK_ACCOUNT: DEMO-ONLY
+      BANK_HOLDER: CI Test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - run: npm run build
+      - run: npm run db:setup
+      - run: npm run test:integration

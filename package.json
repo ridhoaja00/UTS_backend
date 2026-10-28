@@ -1,0 +1,39 @@
+{
+  "name": "smartkos-business",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "server:dev": "node --watch server/index.js",
+    "client:dev": "vite --config client/vite.config.js --host 127.0.0.1",
+    "build": "vite build --config client/vite.config.js",
+    "start": "node server/index.js",
+    "db:setup": "node server/setup.js",
+    "test": "node --test tests/*.test.js",
+    "test:integration": "node --test tests/integration.mjs",
+    "check": "node --check server/app.js && node --check server/services.js && node --check server/setup.js"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.1.0",
+    "lucide-react": "^0.511.0",
+    "multer": "^2.0.2",
+    "mysql2": "^3.14.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.6.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.4.1",
+    "prettier": "^3.5.3",
+    "vite": "^6.3.5"
+  }
+}
